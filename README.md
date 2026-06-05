@@ -186,10 +186,6 @@ Explore insights and visualizations.
 * AI-Powered Chat Summarization
 * Topic Modeling
 * Relationship Network Graphs
-* Advanced Sentiment Analysis
-* Interactive Plotly Dashboards
-* Chat Recommendation Engine
-
 ---
 
 ## 👨‍💻 Author
