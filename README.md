@@ -6,7 +6,7 @@ The application allows users to upload exported WhatsApp chat files and generate
 
 ## 🚀 Live Demo
 
-**Web App:** https://whatsapp-chat-analyzer-3dfe3yus9voe4cbc82qvrg.streamlit.app/
+**Web App:** [https://whatsapp-chat-analyzer-3dfe3yus9voe4cbc82qvrg.streamlit.app/]
 
 ---
 
