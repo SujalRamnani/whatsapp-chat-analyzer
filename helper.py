@@ -8,11 +8,7 @@ from textblob import TextBlob
 
 
 extract = URLExtract()
-
-
-
 # Top Statistics
-
 
 def fetch_stats(selected_user, df):
 
@@ -65,12 +61,16 @@ def most_busy_users(df):
 
 def create_wordcloud(selected_user, df):
 
+    import re
+    from wordcloud import WordCloud
+
     f = open('stop_hinglish.txt', 'r', encoding='utf-8')
     stop_words = set(f.read().split())
 
     if selected_user != 'Overall':
         df = df[df['user'] == selected_user]
 
+    # Remove group notifications
     temp = df[df['user'] != 'group_notification']
 
     # Remove media messages
@@ -80,6 +80,41 @@ def create_wordcloud(selected_user, df):
     temp = temp[temp['message'] != 'This message was deleted\n']
 
     temp = temp.copy()
+
+    def clean_message(message):
+
+        words = []
+
+        for word in message.lower().split():
+
+            # Remove links
+            if 'http' in word or 'www' in word:
+                continue
+
+            # Remove emojis & special characters
+            word = re.sub(r'[^a-zA-Z0-9]', '', word)
+
+            # Remove stop words
+            if word and word not in stop_words:
+                words.append(word)
+
+        return " ".join(words)
+
+    temp['message'] = temp['message'].apply(clean_message)
+
+    text = temp['message'].str.cat(sep=" ")
+
+    wc = WordCloud(
+        width=800,
+        height=400,
+        background_color='white',
+        min_font_size=10
+    )
+
+    df_wc = wc.generate(text)
+
+    return df_wc
+
 
     def remove_stop_words(message):
 
@@ -111,8 +146,6 @@ def create_wordcloud(selected_user, df):
 
     return df_wc
 
-
-
 # Most Common Words
 
 
@@ -139,7 +172,7 @@ def most_common_words(selected_user, df):
         for word in message.lower().split():
 
             # Remove punctuation
-            word = re.sub(r'[^\w]', '', word)
+            word = re.sub(r'[^a-zA-Z0-9]', '', word)
 
             if (
                 word
